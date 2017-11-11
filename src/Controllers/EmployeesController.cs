@@ -11,7 +11,7 @@ namespace DataTablesSample.Controllers
             EmployeeRepository.Load();
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult Index(DataTableModel model)
         {
             var result = EmployeeRepository.GetAll(model.length, model.start);

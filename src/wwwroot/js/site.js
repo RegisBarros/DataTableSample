@@ -15,7 +15,7 @@
 
             $.ajax({
                 url: 'employees',
-                method: 'GET',
+                method: 'POST',
                 data: filter
             }).done(callback);
         },
