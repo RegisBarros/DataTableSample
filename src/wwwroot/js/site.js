@@ -5,18 +5,17 @@
         // "ajax": "employees",
         ajax: function (data, callback, settings) {
             console.log(data);
-            console.log(settings);
 
-
-            var filter = {
-                draw: data.draw,
-                columns: data.columns
-            }
+            // some alternatives here
+            // var filter = {
+            //     draw: data.draw,
+            //     columns: data.columns
+            // }
 
             $.ajax({
                 url: 'employees',
                 method: 'POST',
-                data: filter
+                data: data
             }).done(callback);
         },
         "columns": [

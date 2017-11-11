@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace DataTablesSample.Models
 {
@@ -31,13 +32,27 @@ namespace DataTablesSample.Models
     {
         private static List<EmployeeModel> Employees { get; set; }
 
-        public static ResultList<EmployeeModel> GetAll(int take, int skip)
+        public static ResultList<EmployeeModel> GetAll(int page, int pageSize, string orderBy, string orderDirection)
         {
             var result = new ResultList<EmployeeModel>();
 
-            result.Items = Employees
-                .Skip(skip)
-                .Take(take);
+
+            if (orderDirection == "asc")
+            {
+                result.Items = Employees
+                    .AsQueryable()
+                    .OrderBy(orderBy)
+                    .Skip(page)
+                    .Take(pageSize);
+            }
+            else
+            {
+                result.Items = Employees
+                    .AsQueryable()
+                    .OrderByDescending(orderBy)
+                    .Skip(page)
+                    .Take(pageSize);
+            }
 
             result.Total = Employees.Count;
 
@@ -86,5 +101,28 @@ namespace DataTablesSample.Models
         public IEnumerable<T> Items { get; set; }
 
         public int Total { get; set; }
+    }
+
+    public static class ListHelper
+    {
+        public static IEnumerable<T> OrderBy<T>(this IEnumerable<T> entities, string propertyName)
+        {
+            if (!entities.Any() || string.IsNullOrEmpty(propertyName))
+                return entities;
+
+            var propertyInfo = entities.First().GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+
+            return entities.OrderBy(e => propertyInfo.GetValue(e, null));
+        }
+
+        public static IEnumerable<T> OrderByDescending<T>(this IEnumerable<T> entities, string propertyName)
+        {
+            if (!entities.Any() || string.IsNullOrEmpty(propertyName))
+                return entities;
+
+            var propertyInfo = entities.First().GetType().GetProperty(propertyName, BindingFlags.IgnoreCase | BindingFlags.Public | BindingFlags.Instance);
+
+            return entities.OrderByDescending(e => propertyInfo.GetValue(e, null));
+        }
     }
 }

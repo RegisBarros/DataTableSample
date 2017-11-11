@@ -14,7 +14,11 @@ namespace DataTablesSample.Controllers
         [HttpPost]
         public IActionResult Index(DataTableModel model)
         {
-            var result = EmployeeRepository.GetAll(model.length, model.start);
+
+            var orderBy = model.Columns[model.Order[0].Column].Data;
+            var orderDirection = model.Order[0].Dir;
+
+            var result = EmployeeRepository.GetAll(model.Start, model.Length, orderBy, orderDirection);
 
             return Json(new
             {
