@@ -90,7 +90,7 @@ $(document).ready(function () {
 
         // Get row ID
         var rowId = data.id;;
-        
+
         // Determine whether row ID is in the list of selected row IDs 
         var index = $.inArray(rowId, rows_selected);
 
@@ -125,9 +125,9 @@ $(document).ready(function () {
     // Handle click on "Select all" control
     $('thead input[name="select_all"]', table.table().container()).on('click', function (e) {
         if (this.checked) {
-            $('#example tbody input[type="checkbox"]:not(:checked)').trigger('click');
+            $('#myTable tbody input[type="checkbox"]:not(:checked)').trigger('click');
         } else {
-            $('#example tbody input[type="checkbox"]:checked').trigger('click');
+            $('#myTable tbody input[type="checkbox"]:checked').trigger('click');
         }
 
         // Prevent click event from propagating to parent
@@ -140,7 +140,7 @@ $(document).ready(function () {
         updateDataTableSelectAllCtrl(table);
     });
 
-    $('#send').click(function(){
+    $('#send').click(function () {
         console.log(rows_selected);
     });
 });
