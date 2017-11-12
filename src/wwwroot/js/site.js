@@ -142,5 +142,13 @@ $(document).ready(function () {
 
     $('#send').click(function () {
         console.log(rows_selected);
+
+        rows_selected = null;
+        table.ajax.reload();
     });
+
+    // https://datatables.net/reference/api/ajax.reload()
+    setInterval(function () {
+        table.ajax.reload(null, false);
+    }, 10000);
 });
