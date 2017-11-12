@@ -1,15 +1,22 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
-}
+﻿@{ ViewData["Title"] = "Home Page"; }
 
+<!-- Followed this tutorial https://www.gyrocode.com/articles/jquery-datatables-checkboxes/ -->
+<div class="clearfix"></div>
 <div class="row">
-    <table id="myTable" class="display" cellspacing="0" width="100%">
+    <button id="send" class="btn btn-primary pull-right">Enviar</button>
+</div>
+<div class="clearfix">...</div>
+<div class="row">
+    <table id="myTable" class="display select" cellspacing="0" width="100%">
         <thead>
             <tr>
-                <th>First name</th>
-                <th>Last name</th>
+                <th>
+                    <input name="select_all" value="1" type="checkbox">
+                </th>
+                <th>Name</th>
                 <th>Position</th>
                 <th>Office</th>
+                <th>Age</th>
                 <th>Start date</th>
                 <th>Salary</th>
             </tr>
