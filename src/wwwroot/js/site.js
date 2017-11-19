@@ -29,6 +29,8 @@
 
 $(document).ready(function () {
     var rows_selected = [];
+    var data_row = [];
+
     var table = $('#myTable').DataTable({
         'columnDefs': [{
             'targets': 0,
@@ -39,6 +41,10 @@ $(document).ready(function () {
             'render': function (data, type, full, meta) {
                 return '<input type="checkbox">';
             }
+        },
+        {
+            'targets': 6,
+            'className': 'salary'
         }],
         'rowCallback': function (row, data, dataIndex) {
             // Get row ID
@@ -49,14 +55,39 @@ $(document).ready(function () {
                 $(row).find('input[type="checkbox"]').prop('checked', true);
                 $(row).addClass('selected');
             }
+
+            // var hasDataRow = data_row.some(function(d){
+            //     return d.id === rowId;
+            // });
+
+            var oldRow = data_row.filter(function (d) {
+                return d.id === rowId;
+            });
+
+            if (oldRow.length && oldRow[0].salary !== data.salary) {
+                // console.log('id: ' + rowId + ' oldId: ' + oldRow[0].id + ' old: ' + oldRow[0].salary + ' changed: ' + data.salary);
+
+                if (oldRow[0].salary > data.salary) {
+                    $(row).find('.salary').addClass('increase-salary');
+
+                    setInterval(function () {
+                        $(row).find('.salary').removeClass('increase-salary');
+                    }, 2000);
+                }
+                else {
+                    $(row).find('.salary').addClass('decrease-salary');
+
+                    setInterval(function () {
+                        $(row).find('.salary').removeClass('decrease-salary');
+                    }, 2000);
+                }
+            }
         },
         'order': [1, 'asc'],
-        "processing": true,
+        "processing": false,
         "serverSide": true,
         // "ajax": "employees",
         ajax: function (data, callback, settings) {
-            // console.log(data);
-
             // some alternatives here
             // var filter = {
             //     draw: data.draw,
@@ -67,7 +98,11 @@ $(document).ready(function () {
                 url: 'employees',
                 method: 'POST',
                 data: data
-            }).done(callback);
+            })
+                .done(callback)
+                .complete(function (response) {
+                    data_row = response.responseJSON.data;
+                });
         },
         "columns": [
             { "data": "id" },
@@ -141,8 +176,6 @@ $(document).ready(function () {
     });
 
     $('#send').click(function () {
-        console.log(rows_selected);
-
         rows_selected = null;
         table.ajax.reload();
     });
@@ -150,5 +183,5 @@ $(document).ready(function () {
     // https://datatables.net/reference/api/ajax.reload()
     setInterval(function () {
         table.ajax.reload(null, false);
-    }, 10000);
+    }, 5000);
 });

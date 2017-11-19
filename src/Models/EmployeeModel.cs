@@ -15,6 +15,16 @@ namespace DataTablesSample.Models
         public DateTime StartDate { get; set; }
         public decimal Salary { get; set; }
 
+        public void increasySalary()
+        {
+            Salary += Math.Round(Salary * 0.05M, 2);
+        }
+
+        public void decreaseSalary()
+        {
+            Salary -= Math.Round(Salary * 0.05M, 2);
+        }
+
         public static EmployeeModel Create(int id, string name, string position, string office, int age, DateTime startDate, decimal salary)
         {
             return new EmployeeModel()
@@ -57,6 +67,17 @@ namespace DataTablesSample.Models
             }
 
             result.Total = Employees.Count;
+
+            // Get random employee
+            Random rnd = new Random();
+            int r = rnd.Next(result.Items.Count());
+            var employee = result.Items.ElementAt(r);
+            employee.increasySalary();
+
+            // Get an new one for decrease salary
+            r = rnd.Next(result.Items.Count());
+            employee = result.Items.ElementAt(r);
+            employee.decreaseSalary();
 
             return result;
         }

@@ -33,3 +33,15 @@
         display: none;
     }
 }
+
+.decrease-salary {
+    background-color: #ff5252;
+    font-weight: bold;
+    color: gainsboro;
+}
+
+.increase-salary{
+    background-color: mediumaquamarine;
+    font-weight: bold;
+    color: gainsboro;
+}
